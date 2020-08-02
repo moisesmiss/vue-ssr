@@ -3,7 +3,7 @@
     <header class="header">
       <nav class="inner">
         <router-link to="/" exact>
-          <img class="logo" src="~public/logo-48.png" alt="logo">
+          <img class="logo" src="@public/logo-48.png" alt="logo">
         </router-link>
         <router-link class="link" to="/hello">Hola</router-link>
         <router-link class="link" to="/about">About</router-link>

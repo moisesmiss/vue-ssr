@@ -9,11 +9,11 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const isProd = process.env.NODE_ENV === 'production'
 process.traceDeprecation = true
 
+let vueSrc = '../src'
+
 module.exports = {
   mode: isProd ? 'production' : 'development',
-  devtool: isProd
-    ? false
-    : '#cheap-module-source-map',
+  devtool: isProd ? false : '#cheap-module-source-map',
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/dist/',
@@ -21,8 +21,10 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'public': path.resolve(__dirname, '../public')
-    }
+      '@public': path.resolve(__dirname, '../public'),
+      '@': path.resolve(__dirname, vueSrc),
+    },
+    extensions: ['*', '.js', '.vue', '.json'],
   },
   module: {
     noParse: /es6-promise\.js$/, // avoid webpack shimming process
