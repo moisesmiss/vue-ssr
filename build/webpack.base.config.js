@@ -38,11 +38,14 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif|svg)$/i,
         loader: 'url-loader',
         options: {
-          limit: 10000,
-          //name: '[name].[ext]?[hash]'
+          limit: false,
+          name: '[name].[ext]?[hash]',
+          options: {
+            esModule: false,
+          },
         }
       },
       {
