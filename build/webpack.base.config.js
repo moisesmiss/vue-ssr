@@ -1,12 +1,14 @@
 const path = require('path')
 const webpack = require('webpack')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+//const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const { VueLoaderPlugin } = require('vue-loader')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
+process.traceDeprecation = true
 
 module.exports = {
+  mode: isProd ? 'production' : 'development',
   devtool: isProd
     ? false
     : '#cheap-module-source-map',
@@ -41,31 +43,24 @@ module.exports = {
         test: /\.(png|jpg|gif|svg)$/i,
         loader: 'url-loader',
         options: {
-          limit: false,
+          limit: 1000000,
           name: '[name].[ext]?[hash]',
-          options: {
-            esModule: false,
-          },
+          esModule: false,
         }
       },
       {
         test: /\.css$/,
-        use: ['vue-style-loader', 'css-loader'],
+        use: [
+          'vue-style-loader',
+          'css-loader'
+        ],
       },
       {
-        test: /\.styl(us)?$/,
-        use: isProd
-          ? ExtractTextPlugin.extract({
-              use: [
-                {
-                  loader: 'css-loader',
-                  options: { minimize: true }
-                },
-                'stylus-loader'
-              ],
-              fallback: 'vue-style-loader'
-            })
-          : ['vue-style-loader', 'css-loader', 'stylus-loader']
+        test: /\.scss$/,
+        use: [
+          'vue-style-loader', 
+          'css-loader', 'sass-loader'
+        ]
       },
     ]
   },
@@ -75,13 +70,8 @@ module.exports = {
   plugins: isProd
     ? [
         new VueLoaderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-          compress: { warnings: false }
-        }),
+        // please use config.optimization.minimize
         new webpack.optimize.ModuleConcatenationPlugin(),
-        new ExtractTextPlugin({
-          filename: 'common.[chunkhash].css'
-        })
       ]
     : [
         new VueLoaderPlugin(),

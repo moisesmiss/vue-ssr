@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-const merge = require('webpack-merge')
+const {merge} = require('webpack-merge')
 const base = require('./webpack.base.config')
 const nodeExternals = require('webpack-node-externals')
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
@@ -21,7 +21,7 @@ module.exports = merge(base, {
   // https://github.com/liady/webpack-node-externals
   externals: nodeExternals({
     // do not externalize CSS files in case we need to import it from a dep
-    whitelist: /\.css$/
+    allowlist: /\.css$/
   }),
   plugins: [
     new webpack.DefinePlugin({
